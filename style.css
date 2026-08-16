@@ -36,11 +36,28 @@ body {
 .capture-area {
     width: 1100px;
     margin: 0 auto;
-    padding: 28px 50px 34px;
+    padding: 56px 50px 34px;
     background: #fff;
     border-radius: 24px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, .08);
     transform-origin: top left;
+}
+
+/* 공수 취향표: 젭페스 표보다 넓게 잡아서 저장 이미지가
+   지나치게 세로로 길어지지 않고 4:3에 가까운 비율이 되도록 하고,
+   그만큼 L-R 막대/텍스트 칸도 함께 넓어지도록 한다.
+   9인 버전은 한 번 더 넓혀 정사각형이 아니라 가로로 긴 형태가 되도록 한다.
+   JS의 CAPTURE_WIDTH_LR / CAPTURE_WIDTH_LR_NINE 값과 반드시 같아야 하고,
+   ID 선택자라 명시도가 높으므로 모바일 반응형(width:100%)과 겹치지
+   않도록 데스크톱 폭에서만 적용한다. */
+@media (min-width: 769px) {
+    #captureAreaLr {
+        width: 1400px;
+    }
+
+    #captureAreaLr.nine-member {
+        width: 1700px;
+    }
 }
 
 /* ===========================
@@ -85,7 +102,7 @@ body {
     display: block;
     width: 300px;
     height: auto;
-    margin: 0 auto 4px;
+    margin: 0 auto 32px;
 }
 
 h1 {
@@ -94,7 +111,7 @@ h1 {
     line-height: 1.15;
     font-weight: 900;
     color: #8a8a8a;
-    margin: 0 0 38px;
+    margin: 0 0 32px;
 }
 
 .capture-id-bottom {

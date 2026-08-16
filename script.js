@@ -21,22 +21,22 @@ const MEMBER_COLORS_9 = MEMBERS_9.map(() => "#c7c7c7");
 /* 멤버별 기본 프로필 사진 (members 배열과 순서 동일).
    실제 사진 파일이 없으면 자동으로 이니셜 아바타로 대체돼요. */
 const DEFAULT_PHOTOS_5 = [
-    "assets/jiwoong.png",
-    "assets/hanbin.png",
-    "assets/matthew.png",
-    "assets/taerae.png",
-    "assets/geonuk.png"
+    "assets/m1.png",
+    "assets/m3.png",
+    "assets/m4.png",
+    "assets/m5.png",
+    "assets/m8.png"
 ];
 const DEFAULT_PHOTOS_9 = [
-    "assets/jiwoong.png",
-    "assets/hao.png",
-    "assets/hanbin.png",
-    "assets/matthew.png",
-    "assets/taerae.png",
-    "assets/ricky.png",
-    "assets/gyubin.png",
-    "assets/geonuk.png",
-    "assets/yujin.png"
+    "assets/m1.png",
+    "assets/m2.png",
+    "assets/m3.png",
+    "assets/m4.png",
+    "assets/m5.png",
+    "assets/m6.png",
+    "assets/m7.png",
+    "assets/m8.png",
+    "assets/m9.png"
 ];
 
 /*
@@ -179,7 +179,21 @@ const scaleWrap = document.getElementById("scaleWrap");
 /* CSS의 @media (max-width: 768px)과 동일한 기준.
    이 폭 이하에서는 JS로 축소하지 않고, 반응형 레이아웃을 그대로 사용한다. */
 const MOBILE_BREAKPOINT = 768;
-const DESKTOP_CAPTURE_WIDTH = 1100;
+
+/* 탭 / 9인 모드별 저장(캡처) 기준 폭.
+   공수 취향표는 젭페스 표보다 넓게 잡아 저장 이미지 비율이
+   너무 세로로 길어지지 않도록(4:3에 가깝도록) 한다.
+   9인 버전은 5인 버전보다 한 번 더 넓게 잡아 정사각형에 가깝지
+   않고 가로로 더 길게 보이도록 한다. CSS의 #captureAreaLr,
+   #captureAreaLr.nine-member width 값과 반드시 같아야 한다. */
+const CAPTURE_WIDTH_RPS = 1100;
+const CAPTURE_WIDTH_LR = 1400;
+const CAPTURE_WIDTH_LR_NINE = 1700;
+
+function getCaptureWidth() {
+    if (currentTab === "rps") return CAPTURE_WIDTH_RPS;
+    return nineMode ? CAPTURE_WIDTH_LR_NINE : CAPTURE_WIDTH_LR;
+}
 
 let currentTarget = null; // { type: "cell", td } | { type: "row", index } | { type: "col", index }
 let currentTab = "rps";
@@ -303,16 +317,19 @@ function applyMemberMode() {
 
     table.classList.toggle("nine-member", nineMode);
     lrGrid.classList.toggle("nine-member", nineMode);
+    captureAreaLr.classList.toggle("nine-member", nineMode);
 
     createTable();
     createLrGrid();
     updateNavButtons();
+    fitCaptureArea();
 }
 
 if (nineToggle) {
     nineToggle.checked = nineMode;
     table.classList.toggle("nine-member", nineMode);
     lrGrid.classList.toggle("nine-member", nineMode);
+    captureAreaLr.classList.toggle("nine-member", nineMode);
 
     nineToggle.addEventListener("change", () => {
         nineMode = nineToggle.checked;
@@ -857,7 +874,7 @@ saveBtn.addEventListener("click", async () => {
             scale: 4,
             useCORS: true,
             logging: false,
-            windowWidth: DESKTOP_CAPTURE_WIDTH,
+            windowWidth: getCaptureWidth(),
             windowHeight: Math.max(area.scrollHeight, 1600),
             /*
              * html2canvas는 textarea 안의 줄바꿈/자동 줄바꿈을 제대로
@@ -960,12 +977,13 @@ function fitCaptureArea() {
         return;
     }
 
-    const scale = Math.min(1, screenWidth / DESKTOP_CAPTURE_WIDTH);
+    const captureWidth = getCaptureWidth();
+    const scale = Math.min(1, screenWidth / captureWidth);
 
     area.style.transformOrigin = "top left";
     area.style.transform = `scale(${scale})`;
 
-    wrap.style.width = `${DESKTOP_CAPTURE_WIDTH * scale}px`;
+    wrap.style.width = `${captureWidth * scale}px`;
     wrap.style.height = `${area.scrollHeight * scale}px`;
 }
 
