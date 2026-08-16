@@ -56,14 +56,14 @@ const PAIR_NAMES_5 = [
 
 const PAIR_NAMES_9 = [
     ["즁즁", "즁늘", "즁빈", "즁석", "즁탤", "즁맄", "즁귭", "즁건", "즁윶"], // 김지웅
-    ["늘즁", "늘늘", "늘빈", "늘석", "늘탤", "늘맄", "늘귭", "늘건", "늘윶"], // 장하오
-    ["빈즁", "빈늘", "빈빈", "빈석", "빈탤", "빈맄", "빈귭", "빈건", "빈윶"], // 성한빈
-    ["석즁", "석늘", "석빈", "석석", "석탤", "석맄", "석귭", "석건", "석윶"], // 석매튜
-    ["탤즁", "탤늘", "탤빈", "탤석", "탤탤", "탤맄", "탤귭", "탤건", "탤윶"], // 김태래
+    ["늘즁", "늘늘", "늘빈", "늘맽", "늘탤", "늘맄", "늘귭", "늘욱", "늘청"], // 장하오
+    ["빈즁", "빈늘", "빈빈", "빈석", "빈탤", "빈맄", "빈귭", "빊건", "빈윶"], // 성한빈
+    ["석즁", "석늘", "석성", "성석", "맽탤", "석맄", "석귭", "맽건", "석윶"], // 석매튜
+    ["탤쭝", "탤늘", "탤빈", "탤맽", "탤탤", "탤맄", "탤귭", "탤건", "탤윶"], // 김태래
     ["맄즁", "맄늘", "맄빈", "맄석", "맄탤", "맄맄", "맄귭", "맄건", "맄윶"], // 리키
-    ["귭즁", "귭늘", "귭빈", "귭석", "귭탤", "귭맄", "귭귭", "귭건", "귭윶"], // 김규빈
-    ["건즁", "건늘", "건빈", "건석", "건탤", "건맄", "건귭", "건건", "건윶"], // 박건욱
-    ["윶즁", "윶늘", "윶빈", "윶석", "윶탤", "윶맄", "윶귭", "윶건", "윶윶"]  // 한유진
+    ["귭즁", "귭늘", "귭빈", "귭석", "귭탤", "귭맄", "귭귭", "귭건", "귭청"], // 김규빈
+    ["건즁", "욱짱", "건빊", "건맽", "건탤", "건맄", "건귭", "건건", "욱청"], // 박건욱
+    ["윶즁", "윶늘", "윶빈", "윶석", "윶탤", "윶맄", "유뀨", "윶건", "윶윶"]  // 한유진
 ];
 
 /* 9인 버전 체크 여부에 따라 실제로 화면에서 쓸 멤버 데이터 세트를 고른다 */
@@ -181,17 +181,21 @@ const scaleWrap = document.getElementById("scaleWrap");
 const MOBILE_BREAKPOINT = 768;
 
 /* 탭 / 9인 모드별 저장(캡처) 기준 폭.
-   공수 취향표는 젭페스 표보다 넓게 잡아 저장 이미지 비율이
-   너무 세로로 길어지지 않도록(4:3에 가깝도록) 한다.
-   9인 버전은 5인 버전보다 한 번 더 넓게 잡아 정사각형에 가깝지
-   않고 가로로 더 길게 보이도록 한다. CSS의 #captureAreaLr,
+   젭페스(RPS) 9인 표는 열이 늘어나 기본 폭 그대로면 이미지가
+   정사각형에 가까워지므로 넓혀서 4:3에 가깝게 만들고,
+   공수(L-R) 취향표는 젭페스 표보다 넓게 잡아 이미지가 지나치게
+   세로로 길어지지 않게 하되 9인 버전도 5인 버전과 비슷한 수준으로
+   맞춘다. CSS의 #captureArea.nine-member, #captureAreaLr,
    #captureAreaLr.nine-member width 값과 반드시 같아야 한다. */
 const CAPTURE_WIDTH_RPS = 1100;
+const CAPTURE_WIDTH_RPS_NINE = 1500;
 const CAPTURE_WIDTH_LR = 1400;
-const CAPTURE_WIDTH_LR_NINE = 1700;
+const CAPTURE_WIDTH_LR_NINE = 1450;
 
 function getCaptureWidth() {
-    if (currentTab === "rps") return CAPTURE_WIDTH_RPS;
+    if (currentTab === "rps") {
+        return nineMode ? CAPTURE_WIDTH_RPS_NINE : CAPTURE_WIDTH_RPS;
+    }
     return nineMode ? CAPTURE_WIDTH_LR_NINE : CAPTURE_WIDTH_LR;
 }
 
@@ -317,6 +321,7 @@ function applyMemberMode() {
 
     table.classList.toggle("nine-member", nineMode);
     lrGrid.classList.toggle("nine-member", nineMode);
+    captureAreaRps.classList.toggle("nine-member", nineMode);
     captureAreaLr.classList.toggle("nine-member", nineMode);
 
     createTable();
@@ -329,6 +334,7 @@ if (nineToggle) {
     nineToggle.checked = nineMode;
     table.classList.toggle("nine-member", nineMode);
     lrGrid.classList.toggle("nine-member", nineMode);
+    captureAreaRps.classList.toggle("nine-member", nineMode);
     captureAreaLr.classList.toggle("nine-member", nineMode);
 
     nineToggle.addEventListener("change", () => {

@@ -43,20 +43,33 @@ body {
     transform-origin: top left;
 }
 
-/* 공수 취향표: 젭페스 표보다 넓게 잡아서 저장 이미지가
-   지나치게 세로로 길어지지 않고 4:3에 가까운 비율이 되도록 하고,
-   그만큼 L-R 막대/텍스트 칸도 함께 넓어지도록 한다.
-   9인 버전은 한 번 더 넓혀 정사각형이 아니라 가로로 긴 형태가 되도록 한다.
-   JS의 CAPTURE_WIDTH_LR / CAPTURE_WIDTH_LR_NINE 값과 반드시 같아야 하고,
-   ID 선택자라 명시도가 높으므로 모바일 반응형(width:100%)과 겹치지
-   않도록 데스크톱 폭에서만 적용한다. */
+/* 저장 이미지 비율 조정.
+   - 젭페스(RPS) 9인 표: 열이 10개(9인+헤더)로 늘어나 기본 폭(1100px)
+     그대로면 이미지가 정사각형에 가까워지므로, 폭을 넓혀 4:3에
+     가까운 가로형 비율이 되도록 한다. 표/네비 자체도 넓혀서
+     여백만 늘어나지 않고 표가 같이 커지도록 한다.
+   - 공수(L-R) 취향표: 젭페스 표보다 넓게 잡아 이미지가 지나치게
+     세로로 길어지지 않도록 하되, 9인 버전은 앞서 너무 넓었으므로
+     5인 버전과 비슷한 수준으로 줄인다.
+   JS의 CAPTURE_WIDTH_* 상수들과 반드시 같아야 하고, ID 선택자라
+   명시도가 높으므로 모바일 반응형(width:100%)과 겹치지 않도록
+   데스크톱 폭에서만 적용한다. */
 @media (min-width: 769px) {
+    #captureArea.nine-member {
+        width: 1500px;
+    }
+
+    #captureArea.nine-member .table-nav,
+    #captureArea.nine-member table {
+        max-width: 1380px;
+    }
+
     #captureAreaLr {
         width: 1400px;
     }
 
     #captureAreaLr.nine-member {
-        width: 1700px;
+        width: 1450px;
     }
 }
 
